@@ -1,4 +1,4 @@
-clear all;
+clear
 clc;clf;
 digits(10);
 CP=[
@@ -66,7 +66,8 @@ for i=1:T
     tempB=fix(normrnd(0,FlowBias,N,N));
     Bias=tempB-diag(diag(tempB));
     if(i~=1)
-    S(i+1,:)=(S(i,:)+(sum(Flow)-sum(Flow')).*(7/23)*ShrinkFactor(i)+sum(Bias)- sum(Bias'));
+%    S(i+1,:)=(S(i,:)+(sum(Flow)-sum(Flow')).*(7/23)*ShrinkFactor(i)+sum(Bias)- sum(Bias'));
+    S(i+1,:)=(S(i,:)+(sum(Flow)-sum(Flow'))+sum(Bias)- sum(Bias'));
     else
     S(i+1,:)=(S(i,:)+sum(Flow)-sum(Flow')+sum(Bias)- sum(Bias')); 
     end
@@ -80,7 +81,7 @@ end
     figure(1);
     hold on;
     a=[];
-    for i=1:N
+    for i=9:N
         s=['第' int2str(i) '地点'];
         a(i)=plot(tempTT,S(:,i),'DisplayName',s);
     end
@@ -110,11 +111,12 @@ end
         a(i)=plot(tempTT,noprogrammingS(:,i),'DisplayName',s);
     end
     xlabel('时刻');
-    ylabel('车次数');
+    ylabel('预期车辆数');
     legend('show');
     hold off;
 programmingS=noprogrammingS;
 X=[];
+tempeople=[];
 for i=1:T
     
     eval(['Flow = csvread(''Flow',num2str(i),'.csv'',1,0);']);
@@ -124,9 +126,9 @@ for i=1:T
     Xtable=table(X);
     eval(['writetable(Xtable, ''X',num2str(i),'.csv'');']);
     programmingS(i+1,:)=round((programmingS(i+1,:)+sum(programmingFlow)-sum(programmingFlow')));
-    tempeople=how_many_staffs(CPDIS,X,10,10,1800,30);
-    if tempeople>people
-        people=tempeople;
+    tempeople(i)=how_many_staffs(CPDIS,X,10,10,1800,30);
+    if tempeople(i)>people
+        people=tempeople(i);
     end
 end
     tempT=linspace(1,T+1,T+1);

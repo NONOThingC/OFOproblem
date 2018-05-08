@@ -57,7 +57,8 @@ for i=1:T
 %    ofoLocation = csvread('5.csv',0,2);
 %    eval(['ofoLocation = csvread(''',num2str(i),'.csv'',0,2);']);
 %    %ÎÞtestout
-	eval(['ofoLocation = csvread(''FINAL (',num2str(i),').csv'',0,2);']);
+%	eval(['ofoLocation = csvread(''FINAL (',num2str(i),').csv'',0,2);']);
+%	eval(['ofoLocation = csvread(''S',num2str(i),'.csv'',0,2);']);
 %    np=size(ofoLocation,1);
     for j=1:np
     a=decideClassIndex([ofoLocation(j,2),ofoLocation(j,1)],CP);
